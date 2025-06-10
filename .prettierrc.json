@@ -1,0 +1,7 @@
+{
+  "experimentalOperatorPosition": "start",
+  "singleQuote": true,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "endOfLine": "auto"
+}
