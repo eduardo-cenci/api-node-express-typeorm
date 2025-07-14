@@ -7,6 +7,7 @@ import { AppDataSource } from '../data-source';
 import { Category } from '../entities/Category';
 import { CategoryDto } from '../dtos/categoryDto';
 import { CategoryQueryDto } from '../dtos/categoryQueryDto';
+import { CategoryUpdateDto } from 'src/dtos/categoryUpdateDto';
 import { validateData } from '../helpers/validateData';
 import { getOneAndValidate } from '../helpers/getOneAndValidate';
 
@@ -79,7 +80,7 @@ export class CategoryController {
     next: NextFunction
   ): Promise<void> => {
     const { id } = req.params;
-    const categoryDto = plainToInstance(CategoryDto, req.body);
+    const categoryDto = plainToInstance(CategoryUpdateDto, req.body);
 
     await validateData(categoryDto);
 
@@ -88,7 +89,7 @@ export class CategoryController {
       Number(id)
     );
 
-    Object.assign(category, categoryDto);
+    this.categoryRepository.merge(category as Category, categoryDto);
 
     await this.categoryRepository.save(category);
 

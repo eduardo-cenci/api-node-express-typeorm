@@ -2,6 +2,8 @@ import { validate } from 'class-validator';
 import { CustomError } from './customError';
 
 export async function validateData(data: object): Promise<void> {
+  if (!Object.keys(data).length) throw new CustomError(400);
+
   const validationErrors = await validate(data, {
     whitelist: true,
     forbidNonWhitelisted: true

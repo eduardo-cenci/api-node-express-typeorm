@@ -8,6 +8,7 @@ import { Transaction } from '../entities/Transaction';
 import { Category } from '../entities/Category';
 import { TransactionDto } from '../dtos/transactionDto';
 import { TransactionQueryDto } from '../dtos/transactionQueryDto';
+import { TransactionUpdateDto } from 'src/dtos/transactionUpdateDto';
 import { validateData } from '../helpers/validateData';
 import { getOneAndValidate } from '../helpers/getOneAndValidate';
 import { getRangeFilter } from '../helpers/getRangeFilter';
@@ -108,7 +109,7 @@ export class TransactionController {
     next: NextFunction
   ): Promise<void> => {
     const { id } = req.params;
-    const transactionDto = plainToInstance(TransactionDto, req.body);
+    const transactionDto = plainToInstance(TransactionUpdateDto, req.body);
 
     await validateData(transactionDto);
 
@@ -116,14 +117,20 @@ export class TransactionController {
       this.transactionRepository,
       Number(id)
     );
-    const category = await getOneAndValidate(
-      this.categoryRepository,
-      transactionDto.category_id
+
+    if (transactionDto.category_id) {
+      const category = await getOneAndValidate(
+        this.categoryRepository,
+        transactionDto.category_id
+      );
+
+      transaction.category = category;
+    }
+
+    this.transactionRepository.merge(
+      transaction as Transaction,
+      transactionDto
     );
-
-    Object.assign(transaction, transactionDto);
-
-    transaction.category = category;
 
     await this.transactionRepository.save(transaction);
 
