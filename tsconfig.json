@@ -5,13 +5,18 @@
     "emitDecoratorMetadata": true,
     "module": "commonjs",
     "resolveJsonModule": true,
+    "baseUrl": "./",
     "rootDir": "./src",
     "outDir": "./dist",
+    "removeComments": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "noFallthroughCasesInSwitch": true,
+    "incremental": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
